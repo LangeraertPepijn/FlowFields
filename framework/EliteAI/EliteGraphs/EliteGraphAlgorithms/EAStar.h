@@ -1,5 +1,5 @@
 #pragma once
-
+#include "projects/App_FlowFields/FlowField.h"
 namespace Elite
 {
 	template <class T_NodeType, class T_ConnectionType>
@@ -30,7 +30,7 @@ namespace Elite
 			};
 		};
 
-		std::vector<T_NodeType*> FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode);
+		std::vector<T_NodeType*> FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode,FlowField& flowField);
 
 	private:
 		float GetHeuristicCost(T_NodeType* pStartNode, T_NodeType* pEndNode) const;
@@ -47,7 +47,7 @@ namespace Elite
 	}
 
 	template <class T_NodeType, class T_ConnectionType>
-	std::vector<T_NodeType*> AStar<T_NodeType, T_ConnectionType>::FindPath(T_NodeType* pStartNode, T_NodeType* pGoalNode)
+	std::vector<T_NodeType*> AStar<T_NodeType, T_ConnectionType>::FindPath(T_NodeType* pStartNode, T_NodeType* pGoalNode,FlowField& flowField)
 	{
 		// here we will calculate our path using astar
 		vector<T_NodeType*>path;

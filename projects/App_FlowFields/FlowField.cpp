@@ -65,52 +65,54 @@ void FlowField::CalculateValues(int index)
 	m_Values[index] = 0;
 
 
-	list<int> openList;
-	openList.push_back(index);
-	while (openList.size() > 0)
-	{
-		int currentIndex = openList.front();
-		openList.pop_front();
-
-		int currentWidth = currentIndex % m_Width;
-		int currentHeight = currentIndex / m_Height;
 
 
-		std::vector<int> adjacentIndices;
-		if (currentWidth + 1 < m_Width )
-			adjacentIndices.push_back(currentWidth + 1 + currentHeight * m_Width);
-		if (currentWidth - 1 > 0 )
-			adjacentIndices.push_back(currentWidth - 1 + currentHeight * m_Width);
-		if (currentHeight + 1 < m_Height)
-			adjacentIndices.push_back(currentWidth + (currentHeight + 1) * m_Width);
-		if (currentHeight - 1 > 0)
-			adjacentIndices.push_back(currentWidth + (currentHeight - 1) * m_Width);
-		if (currentHeight - 1 > 0 && currentWidth - 1 > 0)
-			adjacentIndices.push_back(currentWidth - 1 + (currentHeight - 1) * m_Width);
-		if (currentHeight - 1 > 0 && currentWidth + 1 < m_Width)
-			adjacentIndices.push_back(currentWidth + 1 + (currentHeight - 1) * m_Width);
-		if (currentHeight + 1 < m_Height && currentWidth - 1 > 0)
-			adjacentIndices.push_back(currentWidth - 1 + (currentHeight + 1) * m_Width);
-		if (currentHeight + 1 < m_Height && currentWidth + 1 < m_Width)
-			adjacentIndices.push_back(currentWidth + 1 + (currentHeight + 1) * m_Width);
+	//list<int> openList;
+	//openList.push_back(index);
+	//while (openList.size() > 0)
+	//{
+	//	int currentIndex = openList.front();
+	//	openList.pop_front();
 
-		size_t adjacentCount{ adjacentIndices.size() };
+	//	int currentWidth = currentIndex % m_Width;
+	//	int currentHeight = currentIndex / m_Height;
 
-		for (size_t i{}; i < adjacentCount; i++)
-		{
-			int endCost = m_Values[currentIndex] + m_Cost[adjacentIndices[i]];
 
-			if (endCost < m_Values[adjacentIndices[i]])
-			{
-				if (openList.end() == std::find(openList.begin(), openList.end(), adjacentIndices[i]))
-				{
-					openList.push_back(adjacentIndices[i]);
-				}
-				m_Values[adjacentIndices[i]] = endCost;
-			}
-		}
+	//	std::vector<int> adjacentIndices;
+	//	if (currentWidth + 1 < m_Width )
+	//		adjacentIndices.push_back(currentWidth + 1 + currentHeight * m_Width);
+	//	if (currentWidth - 1 > 0 )
+	//		adjacentIndices.push_back(currentWidth - 1 + currentHeight * m_Width);
+	//	if (currentHeight + 1 < m_Height)
+	//		adjacentIndices.push_back(currentWidth + (currentHeight + 1) * m_Width);
+	//	if (currentHeight - 1 > 0)
+	//		adjacentIndices.push_back(currentWidth + (currentHeight - 1) * m_Width);
+	//	if (currentHeight - 1 > 0 && currentWidth - 1 > 0)
+	//		adjacentIndices.push_back(currentWidth - 1 + (currentHeight - 1) * m_Width);
+	//	if (currentHeight - 1 > 0 && currentWidth + 1 < m_Width)
+	//		adjacentIndices.push_back(currentWidth + 1 + (currentHeight - 1) * m_Width);
+	//	if (currentHeight + 1 < m_Height && currentWidth - 1 > 0)
+	//		adjacentIndices.push_back(currentWidth - 1 + (currentHeight + 1) * m_Width);
+	//	if (currentHeight + 1 < m_Height && currentWidth + 1 < m_Width)
+	//		adjacentIndices.push_back(currentWidth + 1 + (currentHeight + 1) * m_Width);
 
-	}
+	//	size_t adjacentCount{ adjacentIndices.size() };
+
+	//	for (size_t i{}; i < adjacentCount; i++)
+	//	{
+	//		int endCost = m_Values[currentIndex] + m_Cost[adjacentIndices[i]];
+
+	//		if (endCost < m_Values[adjacentIndices[i]])
+	//		{
+	//			if (openList.end() == std::find(openList.begin(), openList.end(), adjacentIndices[i]))
+	//			{
+	//				openList.push_back(adjacentIndices[i]);
+	//			}
+	//			m_Values[adjacentIndices[i]] = endCost;
+	//		}
+	//	}
+
+	//}
 
 
 
@@ -192,7 +194,7 @@ void FlowField::CalculateDirections()
 		if (adjacentCount != 0)
 		{
 			int value = INT_MAX;
-			for (int c{}; c < adjacentCount; c++)
+			for (size_t c{}; c < adjacentCount; c++)
 			{
 				if (m_Values[adjacentIndices[c]] < value)
 				{

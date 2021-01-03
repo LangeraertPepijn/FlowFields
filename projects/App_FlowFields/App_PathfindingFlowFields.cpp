@@ -85,7 +85,7 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 		auto endNode = m_pGridGraph->GetNode(endPathIdx);
 		auto pathfinder = AStar<GridTerrainNode, GraphConnection>(m_pGridGraph,m_pHeuristicFunction);
 		
-		m_vPath = pathfinder.FindPath(startNode, endNode);
+		m_vPath = pathfinder.FindPath(startNode, endNode,m_FlowField);
 		m_UpdatePath = false;
 		std::cout << "New Path Calculated" << std::endl;
 		for (int i{}; i < COLUMNS * ROWS; i++)
