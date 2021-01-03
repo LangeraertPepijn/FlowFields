@@ -295,7 +295,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="projects\App_FlowFields\CostField.cpp" />
     <ClCompile Include="projects\App_FlowFields\FlowField.cpp" />
     <ClCompile Include="framework\EliteAI\EliteGraphs\EGraphConnectionTypes.cpp" />
     <ClCompile Include="framework\EliteAI\EliteGraphs\EGraphNodeTypes.cpp" />
@@ -326,7 +325,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="projects\App_FlowFields\CostField.h" />
     <ClInclude Include="projects\App_FlowFields\FlowField.h" />
     <ClInclude Include="framework\EliteAI\EliteGraphs\EGraph2D.h" />
     <ClInclude Include="framework\EliteAI\EliteGraphs\EGraphConnectionTypes.h" />

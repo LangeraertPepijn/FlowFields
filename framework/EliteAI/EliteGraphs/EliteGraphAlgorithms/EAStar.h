@@ -165,6 +165,7 @@ namespace Elite
 		}
 		path.push_back(pStartNode);
 		reverse(path.begin(), path.end());
+		std::cout << "test" << std::endl;
 		return path;
 	}
 

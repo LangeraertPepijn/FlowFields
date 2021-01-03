@@ -9,7 +9,7 @@
 using namespace Elite;
 
 App_PathfindingFlowFields::App_PathfindingFlowFields()
-	: m_CostField (COLUMNS,ROWS)
+	: m_FlowField (ROWS, COLUMNS)
 {
 }
 
@@ -17,11 +17,6 @@ App_PathfindingFlowFields::App_PathfindingFlowFields()
 App_PathfindingFlowFields::~App_PathfindingFlowFields()
 {
 	SAFE_DELETE(m_pGridGraph);
-	for (size_t i = 0; i < m_FlowField.size(); i++)
-	{
-		SAFE_DELETE(m_FlowField[i]);
-
-	}
 }
 
 //Functions
@@ -36,10 +31,6 @@ void App_PathfindingFlowFields::Start()
 	//Create Graph
 	MakeGridGraph();
 
-	for (int i = 0; i < m_pGridGraph->GetNrOfNodes(); i++)
-	{
-		m_FlowField.push_back(new FlowField{});
-	}
 
 	startPathIdx = 0;
 	endPathIdx = 4;
@@ -95,15 +86,16 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 		auto pathfinder = AStar<GridTerrainNode, GraphConnection>(m_pGridGraph,m_pHeuristicFunction);
 		
 		m_vPath = pathfinder.FindPath(startNode, endNode);
-
 		m_UpdatePath = false;
 		std::cout << "New Path Calculated" << std::endl;
 		for (int i{}; i < COLUMNS * ROWS; i++)
 		{
 			TerrainType terrain = m_pGridGraph->GetNode(i)->GetTerrainType();
-		
-			m_CostField.SetCostAt(i,int(terrain));
+			
+			m_FlowField.SetCostAt(m_pGridGraph->GetNode(i)->GetIndex(),int(terrain));
 		}
+		m_FlowField.CalculateValues(m_pGridGraph->GetNodeFromWorldPos(m_TargetPosition));
+		m_FlowField.CalculateDirections();
 		std::cout << "New Costs Calculated" << std::endl;
 	}
 }
@@ -145,7 +137,7 @@ void App_PathfindingFlowFields::Render(float deltaTime) const
 			Elite::Vector2 pos{  float(m_SizeCell)*m_pGridGraph->GetNodePos(node)} ;
 			pos += {m_SizeCell/2.f, m_SizeCell/2.f};
 			
-			Elite::Vector2 dir = *m_FlowField[i]->GetDirection();
+			Elite::Vector2 dir = m_FlowField.GetDirAt(node->GetIndex());
 			DEBUGRENDERER2D->DrawDirection(pos, dir, 5.f, Elite::Color{1,0,0,1});
 
 			i++;

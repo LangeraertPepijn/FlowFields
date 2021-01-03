@@ -24,7 +24,6 @@
     <ClCompile Include="framework\EliteWindow\SDLWindow\SDLWindow.cpp" />
     <ClCompile Include="framework\main.cpp" />
     <ClCompile Include="projects\App_FlowFields\FlowField.cpp" />
-    <ClCompile Include="projects\App_FlowFields\CostField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="projects\App_Selector.h" />
@@ -95,7 +94,6 @@
     <ClInclude Include="framework\EliteAI\EliteGraphs\EliteGraphAlgorithms\EAStar.h" />
     <ClInclude Include="framework\EliteAI\EliteGraphs\EliteGraphAlgorithms\EBFS.h" />
     <ClInclude Include="projects\App_FlowFields\FlowField.h" />
-    <ClInclude Include="projects\App_FlowFields\CostField.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
