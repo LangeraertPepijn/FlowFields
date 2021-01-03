@@ -8,16 +8,12 @@ private:
 	int m_Rows, m_Columns;
 	int m_Size;
 public:
-	FMatrix();
 	FMatrix(int rows, int columns);
 	virtual ~FMatrix();
-
-	void Resize(int rows, int columns);
 
 	float Get(int r, int c);
 	void Set(int r, int c, float val);
 	void SetAll(float value);
-	void SetRowAll(int row,float value);
 
 	void Add(int r, int c, float val);
 
@@ -30,9 +26,7 @@ public:
 		return m_Columns;
 	}
 	void MatrixMultiply(FMatrix& op2, FMatrix& result);
-	void ScalarMultiply(float scalar);
 	void Copy(FMatrix& op);
-	void Add(FMatrix& op);
 	void Subtract(FMatrix& op);
 	void Sigmoid();
 	float Sum();

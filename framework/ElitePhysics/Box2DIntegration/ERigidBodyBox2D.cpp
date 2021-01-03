@@ -58,6 +58,8 @@ Elite::RigidBodyBase<Elite::Vector2, Elite::Vector2>::~RigidBodyBase()
 template<>
 void Elite::RigidBodyBase<Elite::Vector2, Elite::Vector2>::AddShape(Elite::EPhysicsShape* pShape)
 {
+	//Store shape for later retrieval
+	m_vShapes.push_back(pShape);
 	auto pBody = static_cast<b2Body*>(m_pBody);
 
 	if(pShape->type == Elite::CircleShape)
@@ -73,14 +75,13 @@ void Elite::RigidBodyBase<Elite::Vector2, Elite::Vector2>::AddShape(Elite::EPhys
 		fd.friction = 0.2f;
 		auto pFix = pBody->CreateFixture(&fd);
 		pFix->SetUserData(this); //Set the this pointer as userdata of this fixture (RigidBody object)
-		m_vFixtures.push_back(pFix); //Store fixture for later retrieval/removal
 	}
 	else if (pShape->type == Elite::BoxShape)
 	{
 		auto* pBs = static_cast<Elite::EPhysicsBoxShape*>(pShape);
 		//Create Box2D shape
 		b2PolygonShape b2Box;
-		b2Box.SetAsBox(pBs->width/2.0f, pBs->height/2.0f, b2Vec2(0.0f, 0.0f), pBs->angle);
+		b2Box.SetAsBox(pBs->width, pBs->height, b2Vec2(pBs->width / 2.0f, pBs->height / 2.0f), pBs->angle);
 		//Create fixture
 		b2FixtureDef fd;
 		fd.shape = &b2Box;
@@ -89,7 +90,6 @@ void Elite::RigidBodyBase<Elite::Vector2, Elite::Vector2>::AddShape(Elite::EPhys
 		fd.userData = this;
 		auto pFix = pBody->CreateFixture(&fd);
 		pFix->SetUserData(this); //Set the this pointer as userdata of this fixture (RigidBody object)
-		m_vFixtures.push_back(pFix); //Store fixture for later retrieval/removal
 	}
 	else if(pShape->type == Elite::PolygonShape)
 	{
@@ -109,20 +109,7 @@ void Elite::RigidBodyBase<Elite::Vector2, Elite::Vector2>::AddShape(Elite::EPhys
 		fd.userData = this;
 		auto pFix = pBody->CreateFixture(&fd);
 		pFix->SetUserData(this); //Set the this pointer as userdata of this fixture (RigidBody object)
-		m_vFixtures.push_back(pFix); //Store fixture for later retrieval/removal
 	}
-}
-
-template<>
-void Elite::RigidBodyBase<Elite::Vector2, Elite::Vector2>::RemoveAllShapes()
-{
-	auto pBody = static_cast<b2Body*>(m_pBody);
-	for (auto fix : m_vFixtures)
-	{
-		auto pB2Fix = static_cast<b2Fixture*>(fix);
-		pBody->DestroyFixture(pB2Fix);
-	}
-	m_vFixtures.clear();
 }
 
 template <>

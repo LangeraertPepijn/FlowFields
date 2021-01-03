@@ -213,43 +213,14 @@ std::vector<Elite::Triangle*> Elite::Polygon::GetAdjacentTrianglesOnLine(const T
 		if (t == ct) //If same triangle, ignore
 			continue;
 
-		if (ct->metaData.IndexLines[0] == lineIndex
-			|| ct->metaData.IndexLines[1] == lineIndex
-			|| ct->metaData.IndexLines[2] == lineIndex)
+		if (ct->metaData.IndexLine1 == lineIndex
+			|| ct->metaData.IndexLine2 == lineIndex
+			|| ct->metaData.IndexLine3 == lineIndex)
 			adjTriangles.push_back(ct);
 	}
 #endif
 	return adjTriangles;
 }
-
-
-const Elite::Triangle* Elite::Polygon::GetTriangleFromPosition(const Vector2& position, bool onLineAllowed /*= false*/) const
-{
-	for (size_t i = 0; i < m_vpTriangles.size(); i++)
-	{
-		if (PointInTriangle(position, m_vpTriangles[i]->p1, m_vpTriangles[i]->p2, m_vpTriangles[i]->p3, onLineAllowed))
-			return m_vpTriangles[i];
-	}
-	return nullptr;
-}
-
-#ifdef USE_TRIANGLE_METADATA
-const std::vector<const Elite::Triangle*> Elite::Polygon::GetTrianglesFromLineIndex(unsigned int lineIndex) const
-{
-	std::vector<const Triangle*> vpFoundTriangles = {};
-	for (auto pT : m_vpTriangles)
-	{
-		if (pT->metaData.IndexLines[0] == lineIndex ||
-			pT->metaData.IndexLines[1] == lineIndex ||
-			pT->metaData.IndexLines[2] == lineIndex)
-		{
-			vpFoundTriangles.push_back(pT);
-		}
-	}
-	return vpFoundTriangles;
-}
-#endif
-
 
 #pragma endregion //GettersInformation
 //----------------------------------------------------------
@@ -454,30 +425,30 @@ void Elite::Polygon::GenerateLineMatrix()
 		{
 			const auto l = m_vpLines[i];
 			if (*l == l1 || *l == l1rev)
-				t->metaData.IndexLines[0] = i;
+				t->metaData.IndexLine1 = i;
 			if (*l == l2 || *l == l2rev)
-				t->metaData.IndexLines[1] = i;
+				t->metaData.IndexLine2 = i;
 			if (*l == l3 || *l == l3rev)
-				t->metaData.IndexLines[2] = i;
+				t->metaData.IndexLine3 = i;
 		}
 		//Not found, add to matrix
-		if (t->metaData.IndexLines[0] == -1)
+		if (t->metaData.IndexLine1 == -1)
 		{
 			const int index = m_vpLines.size();
 			m_vpLines.push_back(new Line(t->p1, t->p2, index));
-			t->metaData.IndexLines[0] = index;
+			t->metaData.IndexLine1 = index;
 		}
-		if (t->metaData.IndexLines[1] == -1)
+		if (t->metaData.IndexLine2 == -1)
 		{
 			const int index = m_vpLines.size();
 			m_vpLines.push_back(new Line(t->p2, t->p3, index));
-			t->metaData.IndexLines[1] = index;
+			t->metaData.IndexLine2 = index;
 		}
-		if (t->metaData.IndexLines[2] == -1)
+		if (t->metaData.IndexLine3 == -1)
 		{
 			const int index = m_vpLines.size();
 			m_vpLines.push_back(new Line(t->p3, t->p1, index));
-			t->metaData.IndexLines[2] = index;
+			t->metaData.IndexLine3 = index;
 		}
 	}
 #endif

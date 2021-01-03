@@ -4,12 +4,6 @@
 
 #include <random>
 
-FMatrix::FMatrix()
-	:m_Data(nullptr)
-{
-
-}
-
 FMatrix::FMatrix(int rows, int columns) :
 	m_Rows(rows),
 	m_Columns(columns),
@@ -20,16 +14,7 @@ FMatrix::FMatrix(int rows, int columns) :
 }
 
 FMatrix::~FMatrix() {
-	
-	SAFE_DELETE(m_Data);
-}
-
-void FMatrix::Resize(int nrOfRows, int nrOfColumns)
-{
-	m_Rows = nrOfRows;
-	m_Columns = nrOfColumns;
-	m_Size = m_Rows * m_Columns;
-	m_Data = new float[m_Size];
+	delete[] m_Data;
 }
 
 void FMatrix::Set(int row, int column, float value)
@@ -61,12 +46,6 @@ void FMatrix::SetAll(float value) {
 	}
 }
 
-void FMatrix::SetRowAll(int r, float value) {
-	for (int c = 0; c < m_Columns; ++c) {
-		Set(r, c, value);
-	}
-}
-
 void FMatrix::Copy(FMatrix& other) {
 	int maxRows = min(GetNrOfRows(), other.GetNrOfRows());
 	int maxColumns = min(GetNrOfColumns(), other.GetNrOfColumns());
@@ -75,20 +54,6 @@ void FMatrix::Copy(FMatrix& other) {
 		for (int c_column = 0; c_column < maxColumns; ++c_column) {
 			float oVal = other.Get(c_row, c_column);
 			Set(c_row, c_column, oVal);
-		}
-	}
-}
-
-void FMatrix::Add(FMatrix& other)
-{
-	int maxRows = min(GetNrOfRows(), other.GetNrOfRows());
-	int maxColumns = min(GetNrOfColumns(), other.GetNrOfColumns());
-
-	for (int c_row = 0; c_row < maxRows; ++c_row) {
-		for (int c_column = 0; c_column < maxColumns; ++c_column) {
-			float oVal = other.Get(c_row, c_column);
-			float thisVal = Get(c_row, c_column);
-			Set(c_row, c_column, thisVal + oVal);
 		}
 	}
 }
@@ -143,13 +108,6 @@ void FMatrix::MatrixMultiply(FMatrix& op2, FMatrix& result) {
 			}
 			result.Set(c_row, c_column, sum);
 		}
-	}
-}
-
-void FMatrix::ScalarMultiply(float scalar)
-{
-	for (int i = 0; i < m_Size; ++i) {
-		m_Data[i] *= scalar;
 	}
 }
 
@@ -233,7 +191,7 @@ void FMatrix::Print() {
 	for (int c_row = 0; c_row < m_Rows; ++c_row) {
 		for (int c_column = 0; c_column < m_Columns; ++c_column) {
 			float value = Get(c_row, c_column);
-			printf("%.3f\t", value);
+			printf("%.1f\t", value);
 		}
 		printf("\n");
 	}

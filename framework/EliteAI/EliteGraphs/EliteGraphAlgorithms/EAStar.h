@@ -83,9 +83,9 @@ namespace Elite
 					float cost = currentRecord.costSoFar + connection->GetCost();
 					for (size_t c = 0; c < closedList.size(); c++)
 					{
-						if (closedList[c].pNode ==pNode )
+						if (closedList[c].pNode == pNode)
 						{
-							if (closedList[c].costSoFar <= cost )
+							if (closedList[c].costSoFar <= cost)
 							{
 								check1 = true;
 							}
@@ -99,7 +99,7 @@ namespace Elite
 					{
 						if (openList[c].pNode == pNode)
 						{
-							if (openList[c].costSoFar <= cost )
+							if (openList[c].costSoFar <= cost)
 							{
 								check2 = true;
 							}
@@ -109,9 +109,9 @@ namespace Elite
 							}
 						}
 					}
-					
+
 					NodeRecord newNodeRecord{ pNode,connection,cost,cost + GetHeuristicCost(pNode,pGoalNode) };
-					if(!check1&&!check2)
+					if (!check1 && !check2)
 						openList.push_back(newNodeRecord);
 				}
 			}
@@ -140,7 +140,7 @@ namespace Elite
 		}
 		closedList.push_back(currentRecord);
 		closedList.erase(closedList.begin());
-		bool work {true};
+		bool work{ true };
 		while (work)
 		{
 			T_NodeType* pNode = m_pGraph->GetNode(currentRecord.pConnection->GetFrom());
@@ -160,8 +160,8 @@ namespace Elite
 				path.push_back(currentRecord.pNode);
 				work = false;
 			}
-		
-			
+
+
 		}
 		path.push_back(pStartNode);
 		reverse(path.begin(), path.end());

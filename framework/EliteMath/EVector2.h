@@ -149,12 +149,6 @@ namespace Elite
 		const auto revScale = 1.0f / s;
 		return Vector2(revScale * v.x, revScale * v.y);
 	}
-
-	inline ostream& operator<<(ostream& os, const Vector2& rhs)
-	{
-		os << "(" << rhs.x << ", " << rhs.y << " )";
-		return os;
-	}
 #pragma endregion //GlobalVectorOperators
 
 	//=== Global Vector Functions ===
@@ -196,10 +190,6 @@ namespace Elite
 	inline Vector2 randomVector2(float max = 1.f)
 	{
 		return{ randomBinomial(max),randomBinomial(max) };
-	}
-	inline Vector2 randomVector2(float min, float max)
-	{
-		return{ randomFloat(min, max),randomFloat(min, max) };
 	}
 	/*! Orientation to a Vector2 */
 	inline Vector2 OrientationToVector(float orientation)

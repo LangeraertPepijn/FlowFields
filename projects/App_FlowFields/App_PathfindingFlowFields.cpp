@@ -42,7 +42,7 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 		Elite::Vector2 mousePos = DEBUGRENDERER2D->GetActiveCamera()->ConvertScreenToWorld({ (float)mouseData.X, (float)mouseData.Y });
 
 		//Find closest node to click pos
-		int closestNode = m_pGridGraph->GetNodeIdxAtWorldPos(mousePos);
+		int closestNode = m_pGridGraph->GetNodeFromWorldPos(mousePos);
 		if (m_StartSelected)
 		{
 			startPathIdx = closestNode;
@@ -125,11 +125,11 @@ void App_PathfindingFlowFields::MakeGridGraph()
 		, ROWS
 		, m_SizeCell
 		, false// directional or not
-		, true // allow diagonal connections
+		, true // allow diagonal connectionsc
 		, 1.f //default cost perpendicualr connections
 		, 1.5f); // default const for diagonal connections
 	//m_pGridGraph->IsolateNode(6);
-	//m_pGridGraph->GetNode(7)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(7)->SetTerrainType(TerrainType::Mud);
 }
 
 void App_PathfindingFlowFields::UpdateImGui()

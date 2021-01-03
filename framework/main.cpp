@@ -17,33 +17,7 @@
 	#include"projects/App_Steering/Behaviors/App_SteeringBehaviors.h"
 #endif
 
-#ifdef CombinedSteering
-#include"projects/App_Steering/CombinedBehaviors/App_CombinedSteering.h"
-#endif
-#ifdef Flocking
-#include"projects/App_Steering/CombinedBehaviors/App_Flocking.h"
-#endif
-#ifdef GraphTheory
-#include"projects/App_GraphTheory/App_GraphTheory.h"
-#endif
-#ifdef AStar
-#include"projects/App_PathfindingAStar/App_PathfindingAStar.h"
-#endif
-#ifdef NavMesh
-#include"projects/App_NavMeshGraph/App_NavMeshGraph.h"
-#endif
-#ifdef FSM
-#include"projects/App_FiniteStateMachine/App_AgarioGame.h"
-#endif
-#ifdef BT
-#include"projects/App_BehaviorTree/App_AgarioGame_BT.h"
-#endif
-#ifdef InfluenceMaps
-#include"projects/App_InfluenceMap/App_InfluenceMap.h"
-#endif
-#ifdef QLearningW1
-#include"projects/App_MachineLearning/App_MachineLearning.h"
-#endif
+
 #ifdef FlowFields
 #include"projects/App_FlowFields/App_PathfindingFlowFields.h"
 #endif
@@ -54,7 +28,6 @@ bool gRequestShutdown = false;
 #undef main //Undefine SDL_main as main
 int main(int argc, char* argv[])
 {
-	srand(unsigned int(time));
 	int x{}, y{};
 	bool runExeWithCoordinates{ argc == 3 };
 
@@ -114,25 +87,8 @@ int main(int argc, char* argv[])
 #ifdef GraphTheory
 		myApp = new App_GraphTheory;
 #endif
-#ifdef AStar
-		myApp = new App_PathfindingAStar;
-#endif
-#ifdef NavMesh
-		myApp = new App_NavMeshGraph;
-#endif
-#ifdef FSM
-		myApp = new App_AgarioGame;
-#endif
-#ifdef BT
-		myApp = new App_AgarioGame_BT;
-#endif
-#ifdef InfluenceMaps
-		myApp = new App_InfluenceMap;
-#endif
-#ifdef QLearningW1
-		myApp = new App_MachineLearning;
-#endif
-#ifdef FlowFields
+
+#ifdef FlowFields 
 		myApp = new App_PathfindingFlowFields;
 #endif
 		ELITE_ASSERT(myApp, "Application has not been created.");

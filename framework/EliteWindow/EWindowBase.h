@@ -8,7 +8,7 @@
 #define	ELITE_WINDOW_BASE
 
 //=== Includes & Forward Declarations ===
-//struct Vector2;
+struct Vector2;
 
 namespace Elite
 {
