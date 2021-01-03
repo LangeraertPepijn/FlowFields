@@ -7,6 +7,8 @@
 #include "framework\EliteAI\EliteGraphs\EGridGraph.h"
 #include "framework\EliteAI\EliteGraphs\EliteGraphUtilities\EGraphEditor.h"
 #include "framework\EliteAI\EliteGraphs\EliteGraphUtilities\EGraphRenderer.h"
+#include "projects/App_FlowFields/FlowField.h"
+#include "projects/App_FlowFields/CostField.h"
 
 
 //-----------------------------------------------------------------
@@ -16,7 +18,7 @@ class App_PathfindingFlowFields final : public IApp
 {
 public:
 	//Constructor & Destructor
-	App_PathfindingFlowFields() = default;
+	App_PathfindingFlowFields() ;
 	virtual ~App_PathfindingFlowFields();
 
 	//App Functions
@@ -60,6 +62,9 @@ private:
 	void MakeGridGraph();
 	void UpdateImGui();
 
+	//FlowFieldMembers
+	vector<FlowField*> m_FlowField;
+	CostField m_CostField;
 	//C++ make the class non-copyable
 	App_PathfindingFlowFields(const App_PathfindingFlowFields&) = delete;
 	App_PathfindingFlowFields& operator=(const App_PathfindingFlowFields&) = delete;
