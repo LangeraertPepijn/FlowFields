@@ -44,6 +44,9 @@
 #ifdef QLearningW1
 #include"projects/App_MachineLearning/App_MachineLearning.h"
 #endif
+#ifdef FlowFields
+#include"projects/App_FlowFields/App_PathfindingFlowFields.h"
+#endif
 //Hotfix for genetic algorithms project
 bool gRequestShutdown = false;
 
@@ -128,6 +131,9 @@ int main(int argc, char* argv[])
 #endif
 #ifdef QLearningW1
 		myApp = new App_MachineLearning;
+#endif
+#ifdef FlowFields
+		myApp = new App_PathfindingFlowFields;
 #endif
 		ELITE_ASSERT(myApp, "Application has not been created.");
 

@@ -10,6 +10,7 @@
 //#define FSM
 //#define BT
 //#define InfluenceMaps
-#define QLearningW1
+//#define QLearningW1
+#define FlowFields
 
 
