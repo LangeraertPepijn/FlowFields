@@ -6,17 +6,32 @@
 #include "framework\EliteAI\EliteGraphs\EliteGraphAlgorithms\EAstar.h"
 #include "framework\EliteAI\EliteGraphs\EliteGraphAlgorithms\EBFS.h"
 
+
 using namespace Elite;
 
 App_PathfindingFlowFields::App_PathfindingFlowFields()
 	: m_FlowField (COLUMNS, ROWS)
+	, m_pColliders{}
 {
+	for (int i = 0; i < m_NoAgents; i++)
+	{
+		m_pBaseAgents.push_back(new BaseAgent{});
+		m_pBaseAgents[i]->SetPosition(  Elite::Vector2((m_StartPosition.x+m_SizeCell/2.f), (m_StartPosition.y + m_SizeCell / 2.f)));
+	}
 }
 
 //Destructor
 App_PathfindingFlowFields::~App_PathfindingFlowFields()
 {
 	SAFE_DELETE(m_pGridGraph);
+	for (int i = 0; i < m_NoAgents; i++)
+	{
+		SAFE_DELETE( m_pBaseAgents[i]);
+	}
+	for (size_t i = 0; i < m_pColliders.size(); i++)
+	{
+		SAFE_DELETE(m_pColliders[i]);
+	}
 }
 
 //Functions
@@ -40,6 +55,26 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 {
 	UNREFERENCED_PARAMETER(deltaTime);
 
+	for (int i = 0; i < m_NoAgents; i++)
+	{
+		//Elite::Vector2  pos = m_SizeCell * m_pGridGraph->GetNodePos(m_pGridGraph->GetNodeFromWorldPos(m_TargetPosition));
+		//pos += Elite::Vector2(m_SizeCell / 2.f,m_SizeCell/2.f);
+		//
+
+		//bool isNotAtEnd{false};
+
+		//if ((pos.x - 2 + 4 < m_pBaseAgents[i]->GetPosition().x || pos.x - 2 > m_pBaseAgents[i]->GetPosition().x)&& (pos.y - 2 + 4 < m_pBaseAgents[i]->GetPosition().y || pos.y - 2 > m_pBaseAgents[i]->GetPosition().y))
+		//	isNotAtEnd = true;
+		//if(!isNotAtEnd)
+		m_pBaseAgents[i]->SetLinearVelocity(10.f * m_FlowField.GetDirectionAt(m_pGridGraph->GetNodeFromWorldPos(m_pBaseAgents[i]->GetPosition())));
+		//else
+		//	m_pBaseAgents[i]->SetLinearVelocity(Elite::Vector2{});
+		//float angle = acos(Dot(Elite::Vector2(0, 1), m_pBaseAgents[i]->GetLinearVelocity()));
+		//m_pBaseAgents[i]->GetRotation();
+		//m_pBaseAgents[i]->SetRotation(angle);
+		m_pBaseAgents[i]->Update(deltaTime);
+	}
+	 
 	//INPUT
 	bool const middleMousePressed = INPUTMANAGER->IsMouseButtonUp(InputMouseButton::eMiddle);
 	if (middleMousePressed)
@@ -80,11 +115,21 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 		&& startPathIdx != endPathIdx)
 	{
 
+		for (size_t i = 0; i < m_pColliders.size(); i++)
+		{
+			SAFE_DELETE(m_pColliders[i]);
 
+		}
 		std::cout << "New Path Calculated" << std::endl;
 		for (int i{}; i < COLUMNS * ROWS; i++)
 		{
 			TerrainType terrain = m_pGridGraph->GetNode(i)->GetTerrainType();
+			
+
+			if (terrain == TerrainType::Water)
+			{
+				m_pColliders.push_back(new NavigationColliderElement(Elite::Vector2{ float(m_SizeCell) * m_pGridGraph->GetNodePos(i).x + m_SizeCell / 4.f,float(m_SizeCell) * m_pGridGraph->GetNodePos(i).y + m_SizeCell / 4.f }, float(m_SizeCell / 2.f), float(m_SizeCell / 2.f)));
+			}
 
 			m_FlowField.SetCostAt(m_pGridGraph->GetNode(i)->GetIndex(), int(terrain));
 		}
@@ -97,6 +142,7 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 		auto calc = BFS<GridTerrainNode, GraphConnection>(m_pGridGraph);
 		m_vPath = calc.FindPath(startNode, endNode, m_FlowField);
 		m_vPath = pathfinder.FindPath(startNode, endNode,m_FlowField);
+
 
 		m_UpdatePath = false;
 
@@ -115,6 +161,17 @@ void App_PathfindingFlowFields::Render(float deltaTime) const
 		m_bDrawConnectionsCosts
 	);
 	
+	//render agents 
+	for (int i = 0; i < m_NoAgents; i++)
+	{
+		m_pBaseAgents[i]->Render(deltaTime);
+		
+	}
+
+	for (size_t i = 0; i < m_pColliders.size(); i++)
+	{
+		m_pColliders[i]->RenderElement();
+	}
 	//Render start node on top if applicable
 	if (startPathIdx != invalid_node_index)
 	{
@@ -124,6 +181,7 @@ void App_PathfindingFlowFields::Render(float deltaTime) const
 	//Render end node on top if applicable
 	if (endPathIdx != invalid_node_index)
 	{
+		
 		m_GraphRenderer.RenderHighlightedGrid(m_pGridGraph, { m_pGridGraph->GetNode(endPathIdx) }, END_NODE_COLOR);
 	}
 	

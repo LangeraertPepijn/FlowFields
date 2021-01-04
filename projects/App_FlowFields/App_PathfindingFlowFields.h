@@ -8,6 +8,8 @@
 #include "framework\EliteAI\EliteGraphs\EliteGraphUtilities\EGraphEditor.h"
 #include "framework\EliteAI\EliteGraphs\EliteGraphUtilities\EGraphRenderer.h"
 #include "projects/App_FlowFields/FlowField.h"
+#include "projects/Shared/BaseAgent.h"
+#include "projects/Shared/NavigationColliderElement.h"
 
 
 
@@ -64,6 +66,9 @@ private:
 
 	//FlowFieldMembers
 	FlowField m_FlowField;
+	std::vector<BaseAgent* >m_pBaseAgents;
+	std::vector<NavigationColliderElement* >m_pColliders;
+	const static int m_NoAgents{20};
 	
 	//C++ make the class non-copyable
 	App_PathfindingFlowFields(const App_PathfindingFlowFields&) = delete;

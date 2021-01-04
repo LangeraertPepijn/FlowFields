@@ -80,7 +80,11 @@ namespace Elite
 					index = con->GetTo();
 				}
 			}
-			flowField.SetDirtAt(i ,m_pGraph->GetNodePos(index)- m_pGraph->GetNodePos(i));
+			if(flowField.GetCostAt(i)<10 )
+				flowField.SetDirtAt(i ,m_pGraph->GetNodePos(index)- m_pGraph->GetNodePos(i));
+			else
+				flowField.SetDirtAt(i, Vector2{});
+
 		}
 
 
