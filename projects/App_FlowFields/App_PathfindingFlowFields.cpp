@@ -9,7 +9,7 @@
 using namespace Elite;
 
 App_PathfindingFlowFields::App_PathfindingFlowFields()
-	: m_FlowField (ROWS, COLUMNS)
+	: m_FlowField (COLUMNS, ROWS)
 {
 }
 
@@ -79,24 +79,27 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 		&& endPathIdx != invalid_node_index
 		&& startPathIdx != endPathIdx)
 	{
+
+
+		std::cout << "New Path Calculated" << std::endl;
+		for (int i{}; i < COLUMNS * ROWS; i++)
+		{
+			TerrainType terrain = m_pGridGraph->GetNode(i)->GetTerrainType();
+
+			m_FlowField.SetCostAt(m_pGridGraph->GetNode(i)->GetIndex(), int(terrain));
+		}
+
 		//BFS Pathfinding
 		//auto pathfinder = BFS<GridTerrainNode, GraphConnection>(m_pGridGraph);
 		auto startNode = m_pGridGraph->GetNode(startPathIdx);
 		auto endNode = m_pGridGraph->GetNode(endPathIdx);
 		auto pathfinder = AStar<GridTerrainNode, GraphConnection>(m_pGridGraph,m_pHeuristicFunction);
-		
+		auto calc = BFS<GridTerrainNode, GraphConnection>(m_pGridGraph);
+		m_vPath = calc.FindPath(startNode, endNode, m_FlowField);
 		m_vPath = pathfinder.FindPath(startNode, endNode,m_FlowField);
+
 		m_UpdatePath = false;
-		std::cout << "New Path Calculated" << std::endl;
-		for (int i{}; i < COLUMNS * ROWS; i++)
-		{
-			TerrainType terrain = m_pGridGraph->GetNode(i)->GetTerrainType();
-			
-			m_FlowField.SetCostAt(m_pGridGraph->GetNode(i)->GetIndex(),int(terrain));
-		}
-		m_FlowField.CalculateValues(m_pGridGraph->GetNodeFromWorldPos(m_TargetPosition));
-		m_FlowField.CalculateDirections();
-		std::cout << "New Costs Calculated" << std::endl;
+
 	}
 }
 

@@ -25,7 +25,7 @@ Elite::Vector2 FlowField::GetDirectionAt(int index)
 	return m_Directions[index];
 }
 
-void FlowField::SetValueAt(int index, int cost)
+void FlowField::SetValueAt(int index, float cost)
 {
 	if (index <= m_Width * m_Height)
 	{
@@ -38,7 +38,7 @@ void FlowField::SetValueAt(int index, int cost)
 	}
 }
 
-int FlowField::GetValueAt(int index)
+float FlowField::GetValueAt(int index)
 {
 	if (index <= m_Width * m_Height)
 	{
@@ -51,6 +51,16 @@ int FlowField::GetValueAt(int index)
 		std::cout << "width or height error" << std::endl;
 		return -1;
 	}
+}
+
+int FlowField::GetWidth()
+{
+	return m_Width;
+}
+
+int FlowField::GetHeight()
+{
+	return m_Height;
 }
 
 //(x+heiht*y)
@@ -124,6 +134,19 @@ void FlowField::SetCostAt(int index, int cost)
 	{
 
 		m_Cost[index] = cost;
+	}
+	else
+	{
+		std::cout << "index error" << std::endl;
+	}
+}
+
+void FlowField::SetDirtAt(int index, const Elite::Vector2& dir)
+{
+	if (index <= m_Width * m_Height)
+	{
+
+		m_Directions[index] = dir;
 	}
 	else
 	{
@@ -245,5 +268,13 @@ void FlowField::CalculateDirections()
 				}
 
 		}
+	}
+}
+
+void FlowField::ResetValues()
+{
+	for (int i = 0; i < m_Width*m_Height; i++)
+	{
+		m_Values[i] = 10000000;
 	}
 }
