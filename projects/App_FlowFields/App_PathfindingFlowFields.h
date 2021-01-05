@@ -42,8 +42,7 @@ private:
 
 
 	//Pathfinding datamembers
-	int startPathIdx = invalid_node_index;
-	int endPathIdx = invalid_node_index;
+	std::vector<int> m_EndPathIdices{};
 	std::vector<Elite::GridTerrainNode*> m_vPath;
 	bool m_UpdatePath = true;
 
@@ -53,11 +52,13 @@ private:
 
 	//Debug rendering information
 	bool m_bDrawGrid = true;
+	bool m_bDrawVectors = true;
 	bool m_bDrawNodeNumbers = false;
 	bool m_bDrawConnections = false;
 	bool m_bDrawConnectionsCosts = false;
 	bool m_StartSelected = true;
 	int m_SelectedHeuristic = 4;
+	int m_SelectedEndPos = 0;
 	Elite::Heuristic m_pHeuristicFunction = Elite::HeuristicFunctions::Chebyshev;
 
 	//Functions
@@ -65,10 +66,12 @@ private:
 	void UpdateImGui();
 
 	//FlowFieldMembers
-	FlowField m_FlowField;
 	std::vector<BaseAgent* >m_pBaseAgents;
 	std::vector<NavigationColliderElement* >m_pColliders;
-	const static int m_NoAgents{20};
+	std::vector<NavigationColliderElement* >m_pCollidersBorder;
+	const static int m_NoAgents{10};
+	const static int m_NoFlowFields{2};
+	std::vector<FlowField*> m_FlowFieldsPtrs;
 	
 	//C++ make the class non-copyable
 	App_PathfindingFlowFields(const App_PathfindingFlowFields&) = delete;

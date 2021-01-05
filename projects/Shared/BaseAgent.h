@@ -33,6 +33,10 @@ public:
 	const Elite::Color& GetBodyColor() const { return m_BodyColor; }
 	void SetBodyColor(const Elite::Color& col) { m_BodyColor = col; }
 
+	// added for flowfields
+	const int& GetFlowFieldIndex() const { return m_Field; }
+	void SetFlowFieldIndex(const int& flowFieldIndex) { m_Field = flowFieldIndex; }
+
 	Elite::RigidBodyUserData GetUserData() const { return m_pRigidBody->GetUserData(); }
 	void SetUserData(Elite::RigidBodyUserData userData) { m_pRigidBody->SetUserData(userData); }
 
@@ -42,6 +46,8 @@ protected:
 	RigidBody* m_pRigidBody = nullptr;
 	float m_Radius = 1.f;
 	Elite::Color m_BodyColor = { 1,1,0,1 };
+	// added for flowfields
+	int m_Field = {};
 
 private:
 

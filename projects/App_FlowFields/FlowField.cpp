@@ -7,7 +7,7 @@ FlowField::FlowField(int width,int height)
 {
 	for (int i = 0; i < width* height; i++)
 	{
-		m_Directions.push_back(Elite::Vector2 (1,0 ));
+		m_Directions.push_back(Elite::Vector2 (0,0 ));
 		m_Cost.push_back(0);
 		m_Values.push_back(0);
 
