@@ -25,7 +25,7 @@ namespace Elite
 		// here we will calculate our path using bfs
 		std::list<T_NodeType*> openList;
 		std::list<T_NodeType*> closedList;
-		//std::map<T_NodeType*,T_NodeType*> closedList;
+		//std::map<T_NodeType*,T_NodeType*> closedListPath;
 
 		flowField->ResetValues();
 
@@ -54,6 +54,7 @@ namespace Elite
 					if (std::find(openList.begin(), openList.end(), nextNode) == openList.end())
 					{
 						openList.push_back(nextNode);
+						
 					}
 					if(flowField->GetValueAt(con->GetTo())> endCost)
 						flowField->SetValueAt(con->GetTo(),endCost);
@@ -87,19 +88,6 @@ namespace Elite
 				flowField->SetDirtAt(i, Vector2{});
 
 		}
-
-
-		//if (std::find(pDestinationNode)==closedList.end())
-		//	return path;
-		//T_NodeType* currentNode = pDestinationNode;
-		//while (currentNode!= pStartNode)
-		//{
-		//	path.push_back(currentNode);
-		//	currentNode = closedList[currentNode];
-		//}
-
-		//path.push_back(pStartNode);
-		//std::reverse(path.begin(), path.end());
 
 		return path ;
 	}

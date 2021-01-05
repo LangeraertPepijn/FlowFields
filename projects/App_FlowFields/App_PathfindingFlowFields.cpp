@@ -21,6 +21,9 @@ App_PathfindingFlowFields::App_PathfindingFlowFields()
 	m_pCollidersBorder.push_back(new NavigationColliderElement(Elite::Vector2{ -1.15f,37.5f }, 0.75f,75));
 	m_pCollidersBorder.push_back(new NavigationColliderElement(Elite::Vector2{ 300.33f,37.5f }, 0.75f,75));
 
+	m_Colors.push_back(Elite::Color{ 1,0,0 });
+	m_Colors.push_back(Elite::Color{ 0,1,0 });
+	m_Colors.push_back(Elite::Color{ 0,0,1 });
 	for (int i = 0; i < m_NoAgents; i++)
 	{
 		m_pBaseAgents.push_back(new BaseAgent{});
@@ -28,6 +31,7 @@ App_PathfindingFlowFields::App_PathfindingFlowFields()
 		m_pBaseAgents[i]->SetRotation(0);
 		int randomIndex = Elite::randomInt(m_NoFlowFields);
 		m_pBaseAgents[i]->SetFlowFieldIndex(randomIndex);
+		m_pBaseAgents[i]->SetBodyColor(m_Colors[randomIndex]);
 	}
 }
 
@@ -67,6 +71,7 @@ void App_PathfindingFlowFields::Start()
 
 	m_EndPathIdices.push_back(4);
 	m_EndPathIdices.push_back(0);
+	m_EndPathIdices.push_back(50);
 
 
 }
@@ -74,7 +79,7 @@ void App_PathfindingFlowFields::Start()
 void App_PathfindingFlowFields::Update(float deltaTime)
 {
 	UNREFERENCED_PARAMETER(deltaTime);
-
+	int t{};
 	for (int i = 0; i < m_NoAgents; i++)
 	{
 		//Elite::Vector2  pos = m_SizeCell * m_pGridGraph->GetNodePos(m_pGridGraph->GetNodeFromWorldPos(m_TargetPosition));
@@ -90,20 +95,11 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 		int agentIndex = m_pGridGraph->GetNodeFromWorldPos(m_pBaseAgents[i]->GetPosition());
 		if(m_EndPathIdices[flowFieldIndex] != agentIndex&& agentIndex>=0)
 			m_pBaseAgents[i]->SetLinearVelocity(10.f * m_FlowFieldsPtrs[flowFieldIndex]->GetDirectionAt(m_pGridGraph->GetNodeFromWorldPos(m_pBaseAgents[i]->GetPosition())));
-		//else
-		
-		//	m_pBaseAgents[i]->SetLinearVelocity(Elite::Vector2{});
-		//Elite::Vector2 temp = Elite::OrientationToVector(m_pBaseAgents[i]->GetRotation());
-		//float angle = acos(Dot(Elite::Vector2(1, 0), Elite::OrientationToVector( m_pBaseAgents[i]->GetRotation())));
-		//if (angle > -15 && angle < 15)
-		//{
 
-		//	while (angle < 0)
-		//		angle += M_PI * 2;
-		//	while (angle > M_PI * 2)
-		//		angle -= M_PI * 2;
-		//	m_pBaseAgents[i]->SetRotation(angle);
-		//}
+			
+		float angle = acos(Dot(Elite::Vector2(0, 1), m_pBaseAgents[i]->GetLinearVelocity()));
+		auto desiredOrientation = Elite::GetOrientationFromVelocity(m_pBaseAgents[i]->GetLinearVelocity());
+		m_pBaseAgents[i]->SetRotation(desiredOrientation);
 		m_pBaseAgents[i]->Update(deltaTime);
 	}
 	 
@@ -116,17 +112,20 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 
 		//Find closest node to click pos
 		int closestNode = m_pGridGraph->GetNodeFromWorldPos(mousePos);
-		if (m_StartSelected)
-		{
-			m_EndPathIdices[1] = closestNode;
-			m_UpdatePath = true;
-		}
-		else
-		{
-			
-			m_EndPathIdices[0] = closestNode;
-			m_UpdatePath = true;
-		}
+
+		m_EndPathIdices[m_EndPointToSet] = closestNode;
+		m_UpdatePath = true; 
+		//if (m_StartSelected)
+		//{
+		//	m_EndPathIdices[1] = closestNode;
+		//	m_UpdatePath = true;
+		//}
+		//else
+		//{
+		//	
+		//	m_EndPathIdices[0] = closestNode;
+		//	m_UpdatePath = true;
+		//}
 	}
 
 	//GRID INPUT
@@ -175,7 +174,9 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 		for (int i{}; i < m_NoFlowFields; i++)
 		{
 			auto endNodeFlowField = m_pGridGraph->GetNode(m_EndPathIdices[i]);
+	
 			m_vPath = calc.FindPath(endNodeFlowField, endNodeFlowField, m_FlowFieldsPtrs[i]);
+
 
 		}
 		//if (m_EndPathIdices.size() != 0)
@@ -209,16 +210,28 @@ void App_PathfindingFlowFields::Render(float deltaTime) const
 		
 	}
 
-	//for (size_t i = 0; i < m_pCollidersBorder.size(); i++)
-	//{
-	//	m_pCollidersBorder[i]->RenderElement();
-	//}
+
 	//Render start node on top if applicable
 	for (size_t i = 0; i < m_EndPathIdices.size(); i++)
 	{
 		if (m_EndPathIdices[i] != invalid_node_index)
 		{
-			m_GraphRenderer.RenderHighlightedGrid(m_pGridGraph, { m_pGridGraph->GetNode(m_EndPathIdices[i]) }, START_NODE_COLOR);
+			switch (i)
+			{
+			case 0:
+				m_GraphRenderer.RenderHighlightedGrid(m_pGridGraph, { m_pGridGraph->GetNode(m_EndPathIdices[i]) }, m_Colors[i]);
+				break;
+			case 1:
+				m_GraphRenderer.RenderHighlightedGrid(m_pGridGraph, { m_pGridGraph->GetNode(m_EndPathIdices[i]) }, m_Colors[i]);
+				break; 
+			case 2:
+				m_GraphRenderer.RenderHighlightedGrid(m_pGridGraph, { m_pGridGraph->GetNode(m_EndPathIdices[i]) }, m_Colors[i]);
+				break;
+			default:
+				m_GraphRenderer.RenderHighlightedGrid(m_pGridGraph, { m_pGridGraph->GetNode(m_EndPathIdices[i]) }, START_NODE_COLOR);
+				break;
+			}
+		
 		}
 	}
 	//Render end node on top if applicable
@@ -245,7 +258,7 @@ void App_PathfindingFlowFields::Render(float deltaTime) const
 			pos += {m_SizeCell / 2.f, m_SizeCell / 2.f};
 
 			Elite::Vector2 dir = m_FlowFieldsPtrs[m_SelectedEndPos]->GetDirAt(node->GetIndex());
-			DEBUGRENDERER2D->DrawDirection(pos, dir, 5.f, Elite::Color{ 1,0,0,1 },0.1f);
+			DEBUGRENDERER2D->DrawDirection(pos, dir, 5.f, m_Colors[m_SelectedEndPos],0.1f);
 
 			i++;
 		}
@@ -264,6 +277,24 @@ void App_PathfindingFlowFields::MakeGridGraph()
 		, 1.5f); // default const for diagonal connections
 	//m_pGridGraph->IsolateNode(6);
 	m_pGridGraph->GetNode(7)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(61)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(62)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(82)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(83)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(84)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(85)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(29)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(48)->SetTerrainType(TerrainType::Water);
+	m_pGridGraph->GetNode(87)->SetTerrainType(TerrainType::Water);
+	m_pGridGraph->GetNode(27)->SetTerrainType(TerrainType::Water);
+	m_pGridGraph->GetNode(47)->SetTerrainType(TerrainType::Water);
+	m_pGridGraph->GetNode(67)->SetTerrainType(TerrainType::Water);
+	m_pGridGraph->GetNode(194)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(196)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(134)->SetTerrainType(TerrainType::Mud);
+	m_pGridGraph->GetNode(151)->SetTerrainType(TerrainType::Water);
+	m_pGridGraph->GetNode(199)->SetTerrainType(TerrainType::Water);
+	m_pGridGraph->GetNode(117)->SetTerrainType(TerrainType::Water);
 }
 
 void App_PathfindingFlowFields::UpdateImGui()
@@ -299,21 +330,27 @@ void App_PathfindingFlowFields::UpdateImGui()
 
 		/*Spacing*/ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing(); ImGui::Spacing();
 
-		ImGui::Text("A* Pathfinding");
+		ImGui::Text("Flowfields Pathfinding");
 		ImGui::Spacing();
 
 		ImGui::Text("Middle Mouse");
 		ImGui::Text("controls");
 		std::string buttonText{""};
-		if (m_StartSelected)
-			buttonText += "Start Node";
-		else
-			buttonText += "End Node";
 
-		if (ImGui::Button(buttonText.c_str()))
+		if (ImGui::Combo("PositionToChange", &m_EndPointToSet, "Red\0Green\0Blue", 2))
 		{
-			m_StartSelected = !m_StartSelected;
+
 		}
+
+		//if (m_StartSelected)
+		//	buttonText += "Node 1";
+		//else
+		//	buttonText += "Node 0";
+
+		//if (ImGui::Button(buttonText.c_str()))
+		//{
+		//	m_StartSelected = !m_StartSelected;
+		//}
 
 		ImGui::Checkbox("Grid", &m_bDrawGrid);
 		ImGui::Checkbox("NodeNumbers", &m_bDrawNodeNumbers);
@@ -344,7 +381,7 @@ void App_PathfindingFlowFields::UpdateImGui()
 		//		break;
 		//	}
 		//}
-		if (ImGui::Combo("", &m_SelectedEndPos, " 0\0 1", 2))
+		if (ImGui::Combo("FlowFieldToShow", &m_SelectedEndPos, "Red\0Green\0Blue", 2))
 		{
 	
 		}

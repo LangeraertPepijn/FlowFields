@@ -16,6 +16,7 @@ public:
 	Elite::Vector2 GetDirAt(int index)const;
 	void CalculateDirections();
 	void ResetValues();
+	void ResetCost();
 private:
 
 	int m_Width, m_Height;

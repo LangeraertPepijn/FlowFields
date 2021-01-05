@@ -278,3 +278,11 @@ void FlowField::ResetValues()
 		m_Values[i] = 10000000;
 	}
 }
+
+void FlowField::ResetCost()
+{
+	for (int i = 0; i < m_Width * m_Height; i++)
+	{
+		m_Cost[i] = 0;
+	}
+}

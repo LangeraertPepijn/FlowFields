@@ -43,6 +43,7 @@ private:
 
 	//Pathfinding datamembers
 	std::vector<int> m_EndPathIdices{};
+	int m_EndPointToSet {};
 	std::vector<Elite::GridTerrainNode*> m_vPath;
 	bool m_UpdatePath = true;
 
@@ -69,9 +70,10 @@ private:
 	std::vector<BaseAgent* >m_pBaseAgents;
 	std::vector<NavigationColliderElement* >m_pColliders;
 	std::vector<NavigationColliderElement* >m_pCollidersBorder;
-	const static int m_NoAgents{10};
-	const static int m_NoFlowFields{2};
+	const static int m_NoAgents{1};
+	const static int m_NoFlowFields{3};
 	std::vector<FlowField*> m_FlowFieldsPtrs;
+	std::vector<Elite::Color> m_Colors;
 	
 	//C++ make the class non-copyable
 	App_PathfindingFlowFields(const App_PathfindingFlowFields&) = delete;
