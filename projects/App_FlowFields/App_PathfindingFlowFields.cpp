@@ -118,35 +118,28 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 	int t{};
 	for (int i = 0; i < m_NoAgents; i++)
 	{
-		//Elite::Vector2  pos = m_SizeCell * m_pGridGraph->GetNodePos(m_pGridGraph->GetNodeFromWorldPos(m_TargetPosition));
-		//pos += Elite::Vector2(m_SizeCell / 2.f,m_SizeCell/2.f);
-		//
-
-		//bool isNotAtEnd{false};
-
-		//if ((pos.x - 2 + 4 < m_pBaseAgents[i]->GetPosition().x || pos.x - 2 > m_pBaseAgents[i]->GetPosition().x)&& (pos.y - 2 + 4 < m_pBaseAgents[i]->GetPosition().y || pos.y - 2 > m_pBaseAgents[i]->GetPosition().y))
-		//	isNotAtEnd = true;
-		//if(!isNotAtEnd)
-
-
 		int flowFieldIndex = m_pBaseAgents[i]->GetFlowFieldIndex();
 		int agentIndex = m_pGridGraph->GetNodeFromWorldPos(m_pBaseAgents[i]->GetPosition());
 
 		if (m_EndPathIdices[flowFieldIndex] != agentIndex && agentIndex >= 0)
 		{
 			Elite::Vector2 dir = m_pFlowFields[flowFieldIndex]->GetDirectionAt(m_pGridGraph->GetNodeFromWorldPos(m_pBaseAgents[i]->GetPosition()));
-			if (dir != Elite::Vector2{ 0,0 })
+			if (dir == Elite::Vector2{ 101,101 })
+			{
+				m_pBaseAgents[i]->SetLinearVelocity(Elite::Vector2{ 0,0 });
+				m_pBaseAgents[i]->SetRotation(0);
+			}
+			else if (dir != Elite::Vector2{ 0,0 })
 			{
 				m_pBaseAgents[i]->SetLinearVelocity(10.f * dir);
+				auto desiredOrientation = Elite::GetOrientationFromVelocity(m_pBaseAgents[i]->GetLinearVelocity());
+				m_pBaseAgents[i]->SetRotation(desiredOrientation);
 			}
 
 
 		}
-
-		float angle = acos(Dot(Elite::Vector2(0, 1), m_pBaseAgents[i]->GetLinearVelocity()));
-		auto desiredOrientation = Elite::GetOrientationFromVelocity(m_pBaseAgents[i]->GetLinearVelocity());
-		m_pBaseAgents[i]->SetRotation(desiredOrientation);
 		m_pBaseAgents[i]->Update(deltaTime);
+
 
 	}
 	 

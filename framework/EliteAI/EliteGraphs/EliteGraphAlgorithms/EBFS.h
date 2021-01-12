@@ -44,18 +44,21 @@ namespace Elite
 			for (auto con : m_pGraph->GetNodeConnections(currentNode->GetIndex()))
 			{
 
-
-				float endCost = flowField->GetValueAt(currentIndex) + flowField->GetCostAt(con->GetTo());
-				T_NodeType* nextNode = m_pGraph->GetNode(con->GetTo());
-				if (std::find(closedList.begin(),closedList.end(),nextNode) == closedList.end())
+				if (flowField->GetCostAt(con->GetTo()) < int(TerrainType::Water))
 				{
-					if (std::find(openList.begin(), openList.end(), nextNode) == openList.end())
+
+					float endCost = flowField->GetValueAt(currentIndex) + flowField->GetCostAt(con->GetTo());
+					T_NodeType* nextNode = m_pGraph->GetNode(con->GetTo());
+					if (std::find(closedList.begin(), closedList.end(), nextNode) == closedList.end())
 					{
-						openList.push_back(nextNode);
-						
+						if (std::find(openList.begin(), openList.end(), nextNode) == openList.end())
+						{
+							openList.push_back(nextNode);
+
+						}
+						if (flowField->GetValueAt(con->GetTo()) > endCost)
+							flowField->SetValueAt(con->GetTo(), endCost);
 					}
-					if(flowField->GetValueAt(con->GetTo())> endCost)
-						flowField->SetValueAt(con->GetTo(),endCost);
 				}
 			}
 			closedList.push_back(currentNode);
@@ -93,7 +96,7 @@ namespace Elite
 			{
 				for (int i = 0; i < flowField->GetWidth()*flowField->GetHeight(); i++)
 				{
-					flowField->SetDirtAt(i, Vector2{});
+					flowField->SetDirtAt(i, Vector2{101,101});
 
 				}
 	
