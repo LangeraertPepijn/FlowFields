@@ -29,3 +29,7 @@ After this you can start calculating the directions of every nod in the flow fie
 Finally, the direction for the vectors in the flow field can be calculated by going over all the neighbors and comparing the cells value theirs find the lowest value.
 Using the index of the neighbor you calculate the vector from the node position to the indexed neighbor position
 If the target is unreachable the vector is set to the zero vector.
+
+## Using the flow field
+
+Now that there is a fully made flow field it can be used to guide a mass of actors along the grid by getting the direction of the flow field at the actors position and multiplying it with the actor speed. 
