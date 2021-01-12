@@ -43,7 +43,7 @@ namespace Elite
 
 			for (auto con : m_pGraph->GetNodeConnections(currentNode->GetIndex()))
 			{
-				int test = con->GetTo();
+
 
 				float endCost = flowField->GetValueAt(currentIndex) + flowField->GetCostAt(con->GetTo());
 				T_NodeType* nextNode = m_pGraph->GetNode(con->GetTo());
@@ -85,6 +85,11 @@ namespace Elite
 			else 
 				flowField->SetDirtAt(i, Vector2{});
 
+
+		}
+		if (flowField->GetValueAt(0) != 0)
+		{
+			if (flowField->GetDirectionAt(1) == Elite::Vector2{-1,0}&&)
 		}
 	}
 }

@@ -192,7 +192,7 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 			SAFE_DELETE(m_pColliders[i]);
 
 		}
-		std::cout << "New Path Calculated" << std::endl;
+		//std::cout << "New Path Calculated" << std::endl;
 		for (int i{}; i < COLUMNS * ROWS; i++)
 		{
 			TerrainType terrain = m_pGridGraph->GetNode(i)->GetTerrainType();
@@ -284,7 +284,7 @@ void App_PathfindingFlowFields::Render(float deltaTime) const
 		}
 	}
 
-	int i{};
+
 	if (m_bDrawVectors)
 	{
 
@@ -297,9 +297,9 @@ void App_PathfindingFlowFields::Render(float deltaTime) const
 			Elite::Vector2 dir = m_pFlowFields[m_SelectedEndPos]->GetDirAt(node->GetIndex());
 			DEBUGRENDERER2D->DrawDirection(pos, dir, 5.f, m_Colors[m_SelectedEndPos],0.1f);
 
-			//DEBUGRENDERER2D->DrawString(pos, std::to_string(m_pFlowFields[2]->GetValueAt(node->GetIndex())).c_str());
+	
 
-			i++;
+	
 		}
 	}
 }
