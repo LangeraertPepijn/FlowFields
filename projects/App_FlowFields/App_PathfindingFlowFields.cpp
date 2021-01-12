@@ -127,17 +127,17 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 			if (dir == Elite::Vector2{ 101,101 })
 			{
 				m_pBaseAgents[i]->SetLinearVelocity(Elite::Vector2{ 0,0 });
-				m_pBaseAgents[i]->SetRotation(0);
 			}
 			else if (dir != Elite::Vector2{ 0,0 })
 			{
 				m_pBaseAgents[i]->SetLinearVelocity(10.f * dir);
-				auto desiredOrientation = Elite::GetOrientationFromVelocity(m_pBaseAgents[i]->GetLinearVelocity());
-				m_pBaseAgents[i]->SetRotation(desiredOrientation);
+
 			}
 
 
 		}
+		auto desiredOrientation = Elite::GetOrientationFromVelocity(m_pBaseAgents[i]->GetLinearVelocity());
+		m_pBaseAgents[i]->SetRotation(desiredOrientation);
 		m_pBaseAgents[i]->Update(deltaTime);
 
 

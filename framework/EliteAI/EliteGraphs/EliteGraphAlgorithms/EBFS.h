@@ -68,7 +68,7 @@ namespace Elite
 	
 		for (int i{}; i < m_pGraph->GetNrOfNodes(); i++)
 		{
-			float value{FLT_MAX};
+			float value{ flowField->GetValueAt(i) };
 			int index{};
 			for (auto con : m_pGraph->GetNodeConnections(i))
 			{
