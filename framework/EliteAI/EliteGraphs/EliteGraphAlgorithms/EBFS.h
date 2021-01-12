@@ -89,7 +89,15 @@ namespace Elite
 		}
 		if (flowField->GetValueAt(0) != 0)
 		{
-			if (flowField->GetDirectionAt(1) == Elite::Vector2{-1,0}&&)
+			if (flowField->GetDirectionAt(1) == Elite::Vector2{ -1,0 } && flowField->GetDirectionAt(20) == Elite::Vector2{ 0,-1 } && flowField->GetDirectionAt(21) == Elite::Vector2{ -1,-1 })
+			{
+				for (int i = 0; i < flowField->GetWidth()*flowField->GetHeight(); i++)
+				{
+					flowField->SetDirtAt(i, Vector2{});
+
+				}
+	
+			}
 		}
 	}
 }
