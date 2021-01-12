@@ -8,7 +8,7 @@ namespace Elite
 	public:
 		BFS(IGraph<T_NodeType, T_ConnectionType>* pGraph);
 
-		std::vector<T_NodeType*> FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode,FlowField* flowField);
+		void FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode,FlowField* flowField);
 	private:
 		IGraph<T_NodeType, T_ConnectionType>* m_pGraph;
 	};
@@ -20,7 +20,7 @@ namespace Elite
 	}
 
 	template <class T_NodeType, class T_ConnectionType>
-	std::vector<T_NodeType*> BFS<T_NodeType, T_ConnectionType>::FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode, FlowField* flowField)
+	void BFS<T_NodeType, T_ConnectionType>::FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode, FlowField* flowField)
 	{
 		// here we will calculate our path using bfs
 		std::list<T_NodeType*> openList;
@@ -37,11 +37,9 @@ namespace Elite
 		{
 			T_NodeType* currentNode = openList.front();
 			openList.pop_front();
+
 			int currentIndex = currentNode->GetIndex();
-			//if (currentNode == pDestinationNode)
-			//{
-			//	break;
-			//}
+
 
 			for (auto con : m_pGraph->GetNodeConnections(currentNode->GetIndex()))
 			{
@@ -64,7 +62,7 @@ namespace Elite
 		}
 
 		//track back
-		vector<T_NodeType*> path;
+	
 		for (int i{}; i < m_pGraph->GetNrOfNodes(); i++)
 		{
 			float value{FLT_MAX};
@@ -81,15 +79,13 @@ namespace Elite
 					index = con->GetTo();
 				}
 			}
-	
+			
 			if(flowField->GetCostAt(i)<10&& flowField->GetValueAt(i) != 0)
 				flowField->SetDirtAt(i ,m_pGraph->GetNodePos(index)- m_pGraph->GetNodePos(i));
 			else 
 				flowField->SetDirtAt(i, Vector2{});
 
 		}
-
-		return path ;
 	}
 }
 

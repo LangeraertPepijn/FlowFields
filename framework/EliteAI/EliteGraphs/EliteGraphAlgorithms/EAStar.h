@@ -30,7 +30,7 @@ namespace Elite
 			};
 		};
 
-		std::vector<T_NodeType*> FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode,FlowField* flowField);
+		bool FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode);
 
 	private:
 		float GetHeuristicCost(T_NodeType* pStartNode, T_NodeType* pEndNode) const;
@@ -47,14 +47,15 @@ namespace Elite
 	}
 
 	template <class T_NodeType, class T_ConnectionType>
-	std::vector<T_NodeType*> AStar<T_NodeType, T_ConnectionType>::FindPath(T_NodeType* pStartNode, T_NodeType* pGoalNode,FlowField* flowField)
+	bool AStar<T_NodeType, T_ConnectionType>::FindPath(T_NodeType* pStartNode, T_NodeType* pGoalNode)
 	{
 		// here we will calculate our path using astar
 		vector<T_NodeType*>path;
 		vector<NodeRecord> openList;
 		vector<NodeRecord> closedList;
 		NodeRecord currentRecord;
-
+		if (pStartNode == pGoalNode)
+			return false;
 		NodeRecord startRecord{ pStartNode,nullptr,0,GetHeuristicCost(pStartNode,pGoalNode) };
 		openList.push_back(startRecord);
 		while (openList.size() != 0)
@@ -136,7 +137,7 @@ namespace Elite
 		}
 		if (!hasPath)
 		{
-			return path;
+			return false;
 		}
 		closedList.push_back(currentRecord);
 		closedList.erase(closedList.begin());
@@ -164,9 +165,14 @@ namespace Elite
 
 		}
 		path.push_back(pStartNode);
+		for (const auto& pathPoint : path)
+		{
+			if (pathPoint->GetTerrainType() == TerrainType::Water)
+				return false;
+		}
 		reverse(path.begin(), path.end());
 		std::cout << "test" << std::endl;
-		return path;
+		return true;
 	}
 
 	template <class T_NodeType, class T_ConnectionType>

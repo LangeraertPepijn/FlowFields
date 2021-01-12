@@ -31,7 +31,7 @@ public:
 private:
 	//Datamembers
 	const bool ALLOW_DIAGONAL_MOVEMENT = true;
-	Elite::Vector2 m_StartPosition = Elite::ZeroVector2;
+	Elite::Vector2 m_SpawnPosition = Elite::ZeroVector2;
 	Elite::Vector2 m_TargetPosition = Elite::ZeroVector2;
 
 	//Grid datamembers
@@ -42,8 +42,10 @@ private:
 
 
 	//Pathfinding datamembers
+	std::vector<int> m_StartPathIdices{};
 	std::vector<int> m_EndPathIdices{};
 	int m_EndPointToSet {};
+	int m_StartPointToSet {};
 	std::vector<Elite::GridTerrainNode*> m_vPath;
 	bool m_UpdatePath = true;
 
@@ -57,7 +59,7 @@ private:
 	bool m_bDrawNodeNumbers = false;
 	bool m_bDrawConnections = false;
 	bool m_bDrawConnectionsCosts = false;
-	bool m_StartSelected = true;
+	bool m_SpawnSelected = false;
 	int m_SelectedHeuristic = 4;
 	int m_SelectedEndPos = 0;
 	Elite::Heuristic m_pHeuristicFunction = Elite::HeuristicFunctions::Chebyshev;
@@ -70,10 +72,17 @@ private:
 	std::vector<BaseAgent* >m_pBaseAgents;
 	std::vector<NavigationColliderElement* >m_pColliders;
 	std::vector<NavigationColliderElement* >m_pCollidersBorder;
-	const static int m_NoAgents{1};
+	const static int m_NoAgents{50};
 	const static int m_NoFlowFields{3};
-	std::vector<FlowField*> m_FlowFieldsPtrs;
+	std::vector<FlowField*> m_pFlowFields;
 	std::vector<Elite::Color> m_Colors;
+
+
+	//AgentReset
+	float m_Time{0};
+	float m_ResetTime{0};
+	const float m_ResetTimeValue{1.f};
+	int m_NextAgentIdx{0};
 	
 	//C++ make the class non-copyable
 	App_PathfindingFlowFields(const App_PathfindingFlowFields&) = delete;
