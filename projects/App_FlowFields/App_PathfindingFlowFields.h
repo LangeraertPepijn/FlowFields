@@ -81,7 +81,8 @@ private:
 	//AgentReset
 	float m_Time{0};
 	float m_ResetTime{0};
-	const float m_ResetTimeValue{1.f};
+	const float m_ResetTimeValue{0.3f};
+	const int m_TimeForTotReset{25};
 	int m_NextAgentIdx{0};
 	
 	//C++ make the class non-copyable

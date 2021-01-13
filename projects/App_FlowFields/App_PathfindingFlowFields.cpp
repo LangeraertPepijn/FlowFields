@@ -89,7 +89,7 @@ void App_PathfindingFlowFields::Start()
 void App_PathfindingFlowFields::Update(float deltaTime)
 {
 
-	if (int(m_Time) % 25 > int(m_Time + deltaTime) % 25)
+	if (int(m_Time) % m_TimeForTotReset > int(m_Time + deltaTime) % m_TimeForTotReset)
 	{
 		m_ResetTime = 0.01f;
 
@@ -288,7 +288,10 @@ void App_PathfindingFlowFields::Render(float deltaTime) const
 			pos += {m_SizeCell / 2.f, m_SizeCell / 2.f};
 
 			Elite::Vector2 dir = m_pFlowFields[m_SelectedEndPos]->GetDirAt(node->GetIndex());
-			DEBUGRENDERER2D->DrawDirection(pos, dir, 5.f, m_Colors[m_SelectedEndPos],0.1f);
+			if (dir != Elite::Vector2{ 101,101 })
+			{
+				DEBUGRENDERER2D->DrawDirection(pos, dir, 5.f, m_Colors[m_SelectedEndPos], 0.1f);
+			}
 
 	
 
