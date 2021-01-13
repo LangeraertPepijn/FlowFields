@@ -34,6 +34,9 @@ If the target is unreachable the vector is set to the zero vector.
 
 Now that there is a fully made flow field it can be used to guide a mass of units along the grid by getting the direction of the flow field at the units position and multiplying it with the unit speed.
 ## Result
-![Demo](Gif/Flowfields.gif)
+![Demo](ResourcesReadMe/Flowfields.gif)
+![Graph](ResourcesReadMe/graph.PNG)
+
+The performance speed goes down linearly with the ammount or rows added.
 ## Conclusion
 The flow field pathfinding algorithm is very useful when a lot of units need to go to the same point since it doesn't take into account the agent position. This also means that when all the units are close to the endpoint the field calculates more pathing than needed. The calculation speed is not influenced by the amount of units moving around while it is influenced by the amount of nodes it has to give a vector. So the algorithm is best used the amount of units is considerably large compared to the number of nodes.
