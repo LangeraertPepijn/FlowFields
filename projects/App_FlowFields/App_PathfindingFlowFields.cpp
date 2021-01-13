@@ -202,18 +202,17 @@ void App_PathfindingFlowFields::Update(float deltaTime)
 			}
 		}
 
-		//BFS Pathfinding
-		//auto pathfinder = BFS<GridTerrainNode, GraphConnection>(m_pGridGraph);
-
-
 		auto calc = BFS<GridTerrainNode, GraphConnection>(m_pGridGraph);
 
 		for (int i{}; i < m_NoFlowFields; i++)
 		{
 			auto endNodeFlowField = m_pGridGraph->GetNode(m_EndPathIdices[i]);
-	
-			calc.FindPath(endNodeFlowField, endNodeFlowField, m_pFlowFields[i]);
-
+			//auto currentTime = std::chrono::high_resolution_clock::now();
+			calc.FindPath(endNodeFlowField, m_pFlowFields[i]);
+			//auto currentTimeEnd = std::chrono::high_resolution_clock::now();
+			//auto duration = currentTimeEnd - currentTime;
+			//auto totDuration = duration.count();
+			//std::cout << totDuration << std::endl;
 
 		}
 

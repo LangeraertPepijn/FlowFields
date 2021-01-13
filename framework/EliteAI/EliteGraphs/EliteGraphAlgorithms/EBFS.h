@@ -8,7 +8,7 @@ namespace Elite
 	public:
 		BFS(IGraph<T_NodeType, T_ConnectionType>* pGraph);
 
-		void FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode,FlowField* flowField);
+		void FindPath(T_NodeType* pDestinationNode,FlowField* flowField);
 	private:
 		IGraph<T_NodeType, T_ConnectionType>* m_pGraph;
 	};
@@ -20,7 +20,7 @@ namespace Elite
 	}
 
 	template <class T_NodeType, class T_ConnectionType>
-	void BFS<T_NodeType, T_ConnectionType>::FindPath(T_NodeType* pStartNode, T_NodeType* pDestinationNode, FlowField* flowField)
+	void BFS<T_NodeType, T_ConnectionType>::FindPath(T_NodeType* pDestinationNode, FlowField* flowField)
 	{
 		// here we will calculate our path using bfs
 		std::list<T_NodeType*> openList;
