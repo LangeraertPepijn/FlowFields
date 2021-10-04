@@ -35,7 +35,7 @@ If the target is unreachable the vector is set to the zero vector.
 Now that there is a fully made flow field it can be used to guide a mass of units along the grid by getting the direction of the flow field at the units position and multiplying it with the unit speed.
 ## Result
 ![Demo](ResourcesReadMe/Flowfields.gif)
-![Graph](ResourcesReadMe/LinearGraph.PNG)
+
 
 The performance speed goes down linearly with the ammount or rows added.
 ## Conclusion
